@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, TouchableOpacity, FlatList, Image, TextInput, ScrollView, StatusBar, Alert, BackHandler } from 'react-native'
+import React, { useState, useEffect , useRef} from 'react'
+import { View, TouchableOpacity, FlatList, Image, TextInput, ScrollView, StatusBar, Alert, BackHandler, PermissionsAndroid, Modal, Platform } from 'react-native'
 import styles from '../styles/index'
 import TextFormatted from '../component/Text'
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -7,6 +7,7 @@ import Divider from '../component/Divider'
 import {
     useFocusEffect
 } from '@react-navigation/native';
+import { RNCamera } from 'react-native-camera'
 
 const Home = ({ navigation }) => {
     const dummyProduct = [
@@ -63,6 +64,11 @@ const Home = ({ navigation }) => {
     ]
     const [product, setProduct] = useState(dummyProduct)
     const [selectedProduct, setSelectedProduct] = useState([])
+    const [search, setSearch] = useState('')
+    const [openScanner, setOpenScanner] = useState(false)
+    var camera = useRef(null)
+
+
 
     const selectedIcons = (index, selected, item) => {
         const dataProduct = [...product]
@@ -151,20 +157,99 @@ const Home = ({ navigation }) => {
     //     return addListener;
     // },[navigation])
 
+    const permissions = () => {
+        async function requestCameraPermission() {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.CAMERA,
+                    {
+                        title: 'MoCash App Camera Permission',
+                        message:
+                            'MoCash App needs access to your Camera ',
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    //If WRITE_EXTERNAL_STORAGE Permission is granted
+                    //changing the state to show Create PDF option
+                    setOpenScanner(true)
+                } else {
+                    alert('Camera permission denied');
+                }
+            } catch (err) {
+                alert('Camera permission err', err);
+                console.warn(err);
+            }
+        }
+
+        if (Platform.OS = 'android') {
+            requestCameraPermission();
+        } else {
+            setOpenScanner(true);
+        }
+    }
+
+    function onBarcodeScanner(qrvalue) {
+        setSearch(qrvalue)
+        setOpenScanner(false)
+    }
+
+    const takePicture = async () => {
+        if (camera) {
+          const options = { quality: 0.5, base64: true };
+          const data = await camera.takePictureAsync(options);
+          console.log(data.uri);
+        }
+      };
+
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={styles.lightColor.color} barStyle='dark-content' animated showHideTransition='fade' />
+            <Modal visible={openScanner} animationType='slide' style={{ height: 400 }}>
+                <View style={{flex:1}}>
+                    <RNCamera
+                        ref={ref => {
+                            camera = ref;
+                        }}
+                        type={RNCamera.Constants.Type.back}
+                        style={{flex:1,justifyContent:'flex-end',alignItems:'center'}}
+                        flashMode={RNCamera.Constants.FlashMode.off}
+                        androidCameraPermissionOptions={{
+                            title: 'Permission to use camera',
+                            message: 'We need your permission to use your camera',
+                            buttonPositive: 'Ok',
+                            buttonNegative: 'Cancel',
+                        }}
+                        androidRecordAudioPermissionOptions={{
+                            title: 'Permission to use audio recording',
+                            message: 'We need your permission to use your audio',
+                            buttonPositive: 'Ok',
+                            buttonNegative: 'Cancel',
+                        }}
+                        
+                        onGoogleVisionBarcodesDetected={({ barcodes }) => {
+                            console.log('barcode ',barcodes);
+                            setSearch(barcodes[0].data)
+                            setOpenScanner(false)
+                        }}
+                    />
+                    <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+                        <TouchableOpacity onPress={takePicture}>
+                            <TextFormatted style={{ fontSize: 14 }}> SNAP </TextFormatted>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps='always' nestedScrollEnabled={true}>
                 <View style={styles.header}>
-                    <Icons name='menu' size={30} color={styles.primaryIcon.color} style={{position:'absolute'}}onPress={()=>navigation.openDrawer()}/>
+                    <Icons name='menu' size={30} color={styles.primaryIcon.color} style={{ position: 'absolute' }} onPress={() => navigation.openDrawer()} />
                     <View style={styles.headerImageContainer}>
                         <Image source={require('../assets/icons/HeaderLogin.png')} style={styles.headerImage} />
                     </View>
                     <View style={styles.headerForm}>
                         <View style={styles.formRowHeader}>
-                            <TextInput style={styles.textInputLogin} placeholder='Search Product' />
+                            <TextInput style={styles.textInputLogin} placeholder='Search Product' value={search} />
                         </View>
-                        <Icons name='barcode-scan' size={42} color={styles.primaryIcon.color} />
+                        <Icons name='barcode-scan' size={42} color={styles.primaryIcon.color} onPress={permissions} />
                     </View>
 
                 </View>

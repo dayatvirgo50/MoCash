@@ -29,8 +29,19 @@ const DetailTransaction = ({ navigation, route }) => {
         productList.map(item => {
             total = parseInt(total) + parseInt(item.harga)
         })
+        let x = '<tr>'
+        const product = await productList
+        const loop = () => {
+            for (var i = 0; i < product.length; i++) {
+                x = x + '<td style="width: 75%;">' + product[i].name + '</td> <td> Rp ' + product[i].harga + '</td>'
+                x = x + '</tr>';
+            }
+            return x;
+        }
+
 
         const html = `
+        <html>
         <div style="width: 303px;margin-right: auto;margin-left: auto;">
     <h1 style="text-align: center;">
         <strong>Outlet Name</strong></h1>
@@ -49,15 +60,7 @@ const DetailTransaction = ({ navigation, route }) => {
         style="text-align: center;justify-content: center;width: 100%;margin-left: auto;margin-right: auto;">
         <table style="margin-left:auto;margin-right:auto; width: 90%;">
         
-         ${productList.map((item, index) => {
-            //  console.log(item)
-            return(
-            `<tr>
-                    <td style="width: 75%;">${item.qty} ${item.name}</td>
-                    <td>Rp ${item.harga}</td>
-                </tr>`
-        )}
-        )
+        ${loop()
             }
            
         </table>
@@ -83,7 +86,8 @@ const DetailTransaction = ({ navigation, route }) => {
         <p>-------Thank You--------</p>
     </div>
 </div>
-</div>`
+</div>
+</html>`
         let options = {
             //Content to print
             html: html,
