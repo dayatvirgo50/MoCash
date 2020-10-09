@@ -33,7 +33,7 @@ const DetailTransaction = ({ navigation, route }) => {
         const product = await productList
         const loop = () => {
             for (var i = 0; i < product.length; i++) {
-                x = x + '<td style="width: 75%;">' + product[i].name + '</td> <td> Rp ' + product[i].harga + '</td>'
+                x = x + '<td style="width: 45%;">' + product[i].name + '</td> <td style="text-align:right;"> Rp ' + product[i].harga + '</td>'
                 x = x + '</tr>';
             }
             return x;

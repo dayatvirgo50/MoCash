@@ -11,7 +11,7 @@ const Splash = ({navigation}) => {
     const checkAccount = () => {
         AsyncStorage.getItem('email').then(res => {
             if (!res) {
-                navigation.replace('Login')
+                navigation.replace('Auth')
             } else {
                 navigation.navigate('MyTab')
             }

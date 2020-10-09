@@ -3,15 +3,15 @@ import { StyleSheet } from 'react-native'
 import { scale, moderateScale, verticalScale } from 'react-native-size-matters'
 
 
-const bgWhiteColor = '#FDFDFC'
-const primaryColor = '#64b497'
-const accentColor = '#B9A16B'
-const primaryText = '#212121'
-const dividerColor = '#E3E5E9'
-const textLight = '#FDFDFC'
-const errColor = '#F44336'
-const fontFamily = 'Century Gothic'
-const fontFamilyBold = 'Century Gothic Bold'
+export const bgWhiteColor = '#FDFDFC'
+export const primaryColor = '#64b497'
+export const accentColor = '#B9A16B'
+export const primaryText = '#212121'
+export const dividerColor = '#E3E5E9'
+export const textLight = '#FDFDFC'
+export const errColor = '#F44336'
+export const fontFamily = 'Century Gothic'
+export const fontFamilyBold = 'Century Gothic Bold'
 
 const styles = StyleSheet.create({
     container: {
@@ -27,7 +27,9 @@ const styles = StyleSheet.create({
         borderColor: dividerColor,
         borderWidth: 1,
         borderRadius: 20,
-        width: '80%'
+        width: '80%',
+        flexDirection:'row',
+        alignItems:'center'
     },
     header: {
         padding: scale(10),
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
     textInputLogin: {
         textAlign: 'center',
         color: primaryText,
-        fontFamily: fontFamily
+        fontFamily: fontFamily,
     },
     btnLogin: {
         backgroundColor: primaryColor,

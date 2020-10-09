@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useRef} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, TouchableOpacity, FlatList, Image, TextInput, ScrollView, StatusBar, Alert, BackHandler, PermissionsAndroid, Modal, Platform } from 'react-native'
 import styles from '../styles/index'
 import TextFormatted from '../component/Text'
@@ -8,6 +8,7 @@ import {
     useFocusEffect
 } from '@react-navigation/native';
 import { RNCamera } from 'react-native-camera'
+import BarcodeMask from 'react-native-barcode-mask';
 
 const Home = ({ navigation }) => {
     const dummyProduct = [
@@ -129,33 +130,6 @@ const Home = ({ navigation }) => {
         }, [navigation]),
     );
 
-    // useEffect(() => {
-
-    //     const addListener = navigation.addListener('blur', () => {
-
-    //         const dataProduct = [...product]
-    //         dataProduct.map(item => {
-    //             item.selected = false
-    //         })
-    //         setProduct(dataProduct)
-    //         setSelectedProduct([])
-    //     })
-
-    //     console.log(navigation)
-    //     if (navigation.isFocused) {
-
-    //         const handleBack = () => {
-    //             return true;
-    //         }
-    //         const backHandlerListener = BackHandler.addEventListener('hardwareBackPress', handleBack);
-
-    //         return (() => {
-    //             backHandlerListener.remove();
-    //         },[backHandlerListener])
-    //     }
-
-    //     return addListener;
-    // },[navigation])
 
     const permissions = () => {
         async function requestCameraPermission() {
@@ -195,23 +169,23 @@ const Home = ({ navigation }) => {
 
     const takePicture = async () => {
         if (camera) {
-          const options = { quality: 0.5, base64: true };
-          const data = await camera.takePictureAsync(options);
-          console.log(data.uri);
+            const options = { quality: 0.5, base64: true };
+            const data = await camera.takePictureAsync(options);
+            console.log(data.uri);
         }
-      };
+    };
 
     return (
         <View style={styles.container}>
             <StatusBar backgroundColor={styles.lightColor.color} barStyle='dark-content' animated showHideTransition='fade' />
             <Modal visible={openScanner} animationType='slide' style={{ height: 400 }}>
-                <View style={{flex:1}}>
+                <View style={{ flex: 1 }}>
                     <RNCamera
                         ref={ref => {
                             camera = ref;
                         }}
                         type={RNCamera.Constants.Type.back}
-                        style={{flex:1,justifyContent:'flex-end',alignItems:'center'}}
+                        style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}
                         flashMode={RNCamera.Constants.FlashMode.off}
                         androidCameraPermissionOptions={{
                             title: 'Permission to use camera',
@@ -225,16 +199,25 @@ const Home = ({ navigation }) => {
                             buttonPositive: 'Ok',
                             buttonNegative: 'Cancel',
                         }}
-                        
+
                         onGoogleVisionBarcodesDetected={({ barcodes }) => {
-                            console.log('barcode ',barcodes);
-                            setSearch(barcodes[0].data)
-                            setOpenScanner(false)
+                            if (barcodes[0].type === 'UNKNOWN_FORMAT') {
+                                alert('Barcode not Detect')
+                                // setOpenScanner(false)
+                            } else if (barcodes[0].data.includes('www')) {
+                                alert('Not Support Link')
+                            }
+                            else {
+                                setSearch(barcodes[0].data)
+                                setOpenScanner(false)
+                            }
                         }}
-                    />
+                    >
+                        <BarcodeMask />
+                    </RNCamera>
                     <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
                         <TouchableOpacity onPress={takePicture}>
-                            <TextFormatted style={{ fontSize: 14 }}> SNAP </TextFormatted>
+                            <TextFormatted style={{ fontSize: 14 }}> Take </TextFormatted>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -247,7 +230,15 @@ const Home = ({ navigation }) => {
                     </View>
                     <View style={styles.headerForm}>
                         <View style={styles.formRowHeader}>
-                            <TextInput style={styles.textInputLogin} placeholder='Search Product' value={search} />
+                            <View style={{width:'90%'}}>
+                                <TextInput style={styles.textInputLogin} placeholder='Search Product' value={search} onChangeText={value => setSearch(value)} keyboardType='number-pad'/>
+                            </View>
+                            {
+                                search !=='' ? 
+                                <View>
+                                    <Icons name='close' size={20} color={styles.primaryIcon.color} onPress={()=> setSearch('')}/>
+                                </View> : null
+                            }
                         </View>
                         <Icons name='barcode-scan' size={42} color={styles.primaryIcon.color} onPress={permissions} />
                     </View>

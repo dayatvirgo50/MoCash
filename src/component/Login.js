@@ -19,7 +19,9 @@ const Login = ({ navigation }) => {
             setErrPass(false)
             AsyncStorge.setItem('email' , email)
             AsyncStorge.setItem('password', password)
-            navigation.navigate('Home')
+            navigation.navigate('MyTab')
+            setEmail('')
+            setPassword('')
         } else if (email == '' & password !== '') {
             setErrMail(true)
         } else if (email !== '' & password == '') {
