@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, TouchableOpacity, FlatList, Image, TextInput, ScrollView, StatusBar, Alert, BackHandler, PermissionsAndroid, Modal, Platform } from 'react-native'
-import styles from '../styles/index'
+import { View, TouchableOpacity, FlatList, Image, TextInput, ScrollView, StatusBar, Alert, BackHandler, PermissionsAndroid, Modal, Platform, ActivityIndicator } from 'react-native'
+import styles, { Height, primaryColor } from '../styles/index'
 import TextFormatted from '../component/Text'
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Divider from '../component/Divider'
@@ -12,61 +12,62 @@ import BarcodeMask from 'react-native-barcode-mask';
 
 const Home = ({ navigation }) => {
     const dummyProduct = [
-        {
-            id: 1,
-            name: 'Nasi Goreng',
-            harga: '10000',
-            gambar: require('../assets/images/product/makanan/nasiGoreng.jpg'),
-            selected: false,
-            kategori: 'Makanan',
-            stok: 10,
-            tanggalDitambahkan: '29/09/2020'
-        },
-        {
-            id: 2,
-            name: 'Mie Goreng',
-            harga: '10000',
-            gambar: require('../assets/images/product/makanan/mieGoreng.jpg'),
-            selected: false,
-            kategori: 'Makanan',
-            stok: 15,
-            tanggalDitambahkan: '29/09/2020'
-        },
-        {
-            id: 3,
-            name: 'Teh Manis Dingin',
-            harga: '6000',
-            gambar: require('../assets/images/product/minman/iceTea.png'),
-            selected: false,
-            kategori: 'Minuman',
-            stok: 20,
-            tanggalDitambahkan: '29/09/2020'
-        },
-        {
-            id: 4,
-            name: 'Kopi Dingin',
-            harga: '7000',
-            gambar: require('../assets/images/product/minman/iceCoffee.jpg'),
-            selected: false,
-            kategori: 'Minuman',
-            stok: 10,
-            tanggalDitambahkan: '29/09/2020'
-        },
-        {
-            id: 5,
-            name: 'Kopi Dingin',
-            harga: '7000',
-            gambar: require('../assets/images/product/minman/iceCoffee.jpg'),
-            selected: false,
-            kategori: 'Minuman',
-            stok: 10,
-            tanggalDitambahkan: '29/09/2020'
-        },
+        // {
+        //     id: 1,
+        //     name: 'Nasi Goreng',
+        //     harga: '10000',
+        //     gambar: require('../assets/images/product/makanan/nasiGoreng.jpg'),
+        //     selected: false,
+        //     kategori: 'Makanan',
+        //     stok: 10,
+        //     tanggalDitambahkan: '29/09/2020'
+        // },
+        // {
+        //     id: 2,
+        //     name: 'Mie Goreng',
+        //     harga: '10000',
+        //     gambar: require('../assets/images/product/makanan/mieGoreng.jpg'),
+        //     selected: false,
+        //     kategori: 'Makanan',
+        //     stok: 15,
+        //     tanggalDitambahkan: '29/09/2020'
+        // },
+        // {
+        //     id: 3,
+        //     name: 'Teh Manis Dingin',
+        //     harga: '6000',
+        //     gambar: require('../assets/images/product/minman/iceTea.png'),
+        //     selected: false,
+        //     kategori: 'Minuman',
+        //     stok: 20,
+        //     tanggalDitambahkan: '29/09/2020'
+        // },
+        // {
+        //     id: 4,
+        //     name: 'Kopi Dingin',
+        //     harga: '7000',
+        //     gambar: require('../assets/images/product/minman/iceCoffee.jpg'),
+        //     selected: false,
+        //     kategori: 'Minuman',
+        //     stok: 10,
+        //     tanggalDitambahkan: '29/09/2020'
+        // },
+        // {
+        //     id: 5,
+        //     name: 'Kopi Dingin',
+        //     harga: '7000',
+        //     gambar: require('../assets/images/product/minman/iceCoffee.jpg'),
+        //     selected: false,
+        //     kategori: 'Minuman',
+        //     stok: 10,
+        //     tanggalDitambahkan: '29/09/2020'
+        // },
     ]
     const [product, setProduct] = useState(dummyProduct)
     const [selectedProduct, setSelectedProduct] = useState([])
     const [search, setSearch] = useState('')
     const [openScanner, setOpenScanner] = useState(false)
+    const [loading, setLoading] = useState(true)
     var camera = useRef(null)
 
 
@@ -162,10 +163,6 @@ const Home = ({ navigation }) => {
         }
     }
 
-    function onBarcodeScanner(qrvalue) {
-        setSearch(qrvalue)
-        setOpenScanner(false)
-    }
 
     const takePicture = async () => {
         if (camera) {
@@ -174,6 +171,51 @@ const Home = ({ navigation }) => {
             console.log(data.uri);
         }
     };
+
+    function renderView() {
+        if (loading) {
+           return <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, alignSelf: 'center', margin: 5, marginTop: '25%' }}>
+                {/* <View style={{ borderWidth: 1 }}> */}
+               <ActivityIndicator color={primaryColor} size={'large'}/>
+                {/* </View> */}
+            </View>
+        }
+        else {
+            if (product.length === 0) {
+                return <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1, alignSelf: 'center', margin: 5, marginTop: '25%' }}>
+                    {/* <View style={{ borderWidth: 1 }}> */}
+                    <Image source={require('../assets/icons/NoProduct.png')} style={{ resizeMode: 'contain', height: 140 }} />
+                    <TextFormatted>No Product Available</TextFormatted>
+                    {/* </View> */}
+                </View>
+            } else {
+                return <FlatList
+                    data={product}
+                    numColumns={2}
+                    columnWrapperStyle={{ justifyContent: 'space-between' }}
+                    contentContainerStyle={{ width: '100%' }}
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity key={index} style={styles.itemProductContainer} onPress={() => { selectedIcons(index, item.selected, item) }} >
+                            <View style={styles.iconSelected}>
+                                {
+                                    item.selected ?
+                                        <Icons name='check-circle' size={22} color={styles.accentColor.color} onPress={() => selectedIcons(index, item.selected, item)} /> :
+                                        <Icons name='circle-outline' size={22} color={styles.accentColor.color} onPress={() => selectedIcons(index, item.selected, item)} />
+                                }
+                            </View>
+                            <View style={styles.imageListProductContainer}>
+                                <Image source={item.gambar} style={styles.imageListProduct} />
+                            </View>
+                            <TextFormatted>{item.name}</TextFormatted>
+                        </TouchableOpacity>
+                    )}
+                    keyExtractor={item => item.id.toString()}
+                />
+            }
+        }
+
+
+    }
 
     return (
         <View style={styles.container}>
@@ -215,9 +257,12 @@ const Home = ({ navigation }) => {
                     >
                         <BarcodeMask />
                     </RNCamera>
-                    <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
-                        <TouchableOpacity onPress={takePicture}>
+                    <View style={{ flex: 0, justifyContent: 'center' }}>
+                        <TouchableOpacity onPress={takePicture} style={{ borderWidth: 1, borderColor: styles.dividerColor, padding: 10, alignItems: 'center', marginVertical: 5 }}>
                             <TextFormatted style={{ fontSize: 14 }}> Take </TextFormatted>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => setOpenScanner(false)} style={{ borderWidth: 1, borderColor: styles.dividerColor, padding: 10, alignItems: 'center', marginVertical: 5 }}>
+                            <TextFormatted style={{ fontSize: 14 }}> Cancel </TextFormatted>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -230,14 +275,14 @@ const Home = ({ navigation }) => {
                     </View>
                     <View style={styles.headerForm}>
                         <View style={styles.formRowHeader}>
-                            <View style={{width:'90%'}}>
-                                <TextInput style={styles.textInputLogin} placeholder='Search Product' value={search} onChangeText={value => setSearch(value)} keyboardType='number-pad'/>
+                            <View style={{ width: '90%' }}>
+                                <TextInput style={styles.textInputLogin} placeholder='Search Product' value={search} onChangeText={value => setSearch(value)} keyboardType='number-pad' />
                             </View>
                             {
-                                search !=='' ? 
-                                <View>
-                                    <Icons name='close' size={20} color={styles.primaryIcon.color} onPress={()=> setSearch('')}/>
-                                </View> : null
+                                search !== '' ?
+                                    <View>
+                                        <Icons name='close' size={20} color={styles.primaryIcon.color} onPress={() => setSearch('')} />
+                                    </View> : null
                             }
                         </View>
                         <Icons name='barcode-scan' size={42} color={styles.primaryIcon.color} onPress={permissions} />
@@ -248,28 +293,10 @@ const Home = ({ navigation }) => {
                     <Divider width={'90%'} />
                     <TextFormatted style={styles.title}>Product List : </TextFormatted>
                     <Divider width={'90%'} />
-                    <FlatList
-                        data={product}
-                        numColumns={2}
-                        columnWrapperStyle={{ justifyContent: 'space-between' }}
-                        contentContainerStyle={{ width: '100%' }}
-                        renderItem={({ item, index }) => (
-                            <TouchableOpacity key={index} style={styles.itemProductContainer} onPress={() => { selectedIcons(index, item.selected, item) }} >
-                                <View style={styles.iconSelected}>
-                                    {
-                                        item.selected ?
-                                            <Icons name='check-circle' size={22} color={styles.accentColor.color} onPress={() => selectedIcons(index, item.selected, item)} /> :
-                                            <Icons name='circle-outline' size={22} color={styles.accentColor.color} onPress={() => selectedIcons(index, item.selected, item)} />
-                                    }
-                                </View>
-                                <View style={styles.imageListProductContainer}>
-                                    <Image source={item.gambar} style={styles.imageListProduct} />
-                                </View>
-                                <TextFormatted>{item.name}</TextFormatted>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={item => item.id.toString()}
-                    />
+                    {
+                        renderView()
+                    }
+
                 </View>
             </ScrollView>
             {

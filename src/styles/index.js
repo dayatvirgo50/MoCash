@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { scale, moderateScale, verticalScale } from 'react-native-size-matters'
 
 
@@ -12,6 +12,8 @@ export const textLight = '#FDFDFC'
 export const errColor = '#F44336'
 export const fontFamily = 'Century Gothic'
 export const fontFamilyBold = 'Century Gothic Bold'
+export const Height = Dimensions.get('window').height
+export const Width = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
     container: {

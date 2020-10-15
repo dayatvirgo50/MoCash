@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
     Image,
     Button
 } from 'react-native';
-import {BluetoothEscposPrinter} from "react-native-bluetooth-escpos-printer";
+import { BluetoothEscposPrinter } from "react-native-bluetooth-escpos-printer";
 
 
 const base64Image = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA8FBMVEUAAABCQkJDQ0NFRUU/Pz9BQUFAQEBERERDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0MAAAA0ZZMIAAAATnRSTlMAAAAAAAAAABWFz8JdBQFHt9OYIxSi/PBsBFHjvCSk/vJt5b7mo26h75ziIZkD1csRXvpziwvx+QadveRSSA3XF6r31DMPOSLWzMTZFgd4wftfAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAaBJREFUSMe11dlSwjAUgOE2WmUTQRBtBQVBREREQEVUFkHcz/s/jklbQ7YOhwtz2fzftJ1OTi0rWDaJxRPJ1A6xxEXSu5nsXo7Ylrpskt8vABwcuqIgG94RABRLmtgk+eMTugXliiAI8U7ZRaiqwvnrJUH7WnBRFfR5zsKeinoohN4XRHyeZc8F2RJ6SSh9KJReeCpH7QOh9st76L3/5lrPRf5c6wEaF039IlQvmYgXAL1aVxQk8D20YxQk1wDXHQpuGui+22Pv4FbK2L5/639Rt44TYY8WvEcKoUcJqUcIpV8ptN4Xd5H9vd5TMXiIBMOOoXe8x0igzJKgf6pB9JJmCaIXJkPYb6/oFYHoJYHqxXllo/qlcDxcz8VzE9lTkWInLoPuAZIjCrJrgPGEgtYaYDqgIFc07LwMTbNkNmfvQEpVbafbfzXMkvbCn622Lth50adP2BuEf740MVvwP4oi+LyShNArQphXgpB69v/jQppXXCi9IJR5FQqt50KbV74w9Ey8td4/etq8Sn1+TeeGngn3u5PW7myPJj/G/v/WL4DMswebZ4AxAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE1LTA2LTI1VDA4OjQ0OjQ2KzA4OjAww1b9dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNS0wNi0yNVQwODo0NDo0NiswODowMLILRcsAAAAASUVORK5CYII=";
@@ -29,30 +29,30 @@ export default class EscPos extends Component {
     }
 
     render() {
-        return <View style={{flex: 1}}>
+        return <View style={{ flex: 1 }}>
 
             <View style={styles.btn}>
                 <Button onPress={() => {
                     this.props.navigator.pop();
-                }} title="&lt;= Back To Pre"/>
+                }} title="&lt;= Back To Pre" />
             </View>
             <View style={styles.btn}>
                 <Button onPress={async () => {
                     await BluetoothEscposPrinter.printBarCode("123456789012", BluetoothEscposPrinter.BARCODETYPE.JAN13, 3, 120, 0, 2);
-                    await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                }} title="Print BarCode"/>
+                    await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                }} title="Print BarCode" />
             </View>
             <View style={styles.btn}>
                 <Button onPress={async () => {
-                    await  BluetoothEscposPrinter.printQRCode("Test", 280, BluetoothEscposPrinter.ERROR_CORRECTION.L);//.then(()=>{alert('done')},(err)=>{alert(err)});
-                    await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                }} title="Print QRCode"/>
+                    await BluetoothEscposPrinter.printQRCode("Test", 280, BluetoothEscposPrinter.ERROR_CORRECTION.L);//.then(()=>{alert('done')},(err)=>{alert(err)});
+                    await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                }} title="Print QRCode" />
             </View>
 
             <View style={styles.btn}>
                 <Button onPress={async () => {
                     await BluetoothEscposPrinter.printerUnderLine(2);
-                    await  BluetoothEscposPrinter.printText("Test1\r\n", {
+                    await BluetoothEscposPrinter.printText("Test1\r\n", {
                         encoding: 'GBK',
                         codepage: 0,
                         widthtimes: 0,
@@ -60,14 +60,14 @@ export default class EscPos extends Component {
                         fonttype: 1
                     });
                     await BluetoothEscposPrinter.printerUnderLine(0);
-                    await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                }} title="Print UnderLine"/>
+                    await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                }} title="Print UnderLine" />
             </View>
 
             <View style={styles.btn}>
                 <Button onPress={async () => {
                     await BluetoothEscposPrinter.rotate(BluetoothEscposPrinter.ROTATION.ON);
-                    await  BluetoothEscposPrinter.printText("Test2\r\n", {
+                    await BluetoothEscposPrinter.printText("Test2\r\n", {
                         encoding: 'GBK',
                         codepage: 0,
                         widthtimes: 0,
@@ -75,115 +75,130 @@ export default class EscPos extends Component {
                         fonttype: 1
                     });
                     await BluetoothEscposPrinter.rotate(BluetoothEscposPrinter.ROTATION.OFF);
-                    await  BluetoothEscposPrinter.printText("Test3\r\n", {
+                    await BluetoothEscposPrinter.printText("Test3\r\n", {
                         encoding: 'GBK',
                         codepage: 0,
                         widthtimes: 0,
                         heigthtimes: 0,
                         fonttype: 1
                     });
-                    await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                }} title="Print Rotate"/>
+                    await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                }} title="Print Rotate" />
             </View>
 
             <View style={styles.btn}>
                 <Button onPress={async () => {
-                 await BluetoothEscposPrinter.printerInit();
-                    await  BluetoothEscposPrinter.printText("I am an english\r\n\r\n", {});
-                }} title="Print Text"/>
+                    await BluetoothEscposPrinter.printerInit();
+                    await BluetoothEscposPrinter.printText("I am an english\r\n\r\n", {});
+                }} title="Print Text" />
             </View>
             <View style={styles.btn}>
                 <Button onPress={async () => {
                     await BluetoothEscposPrinter.printerLeftSpace(0);
                     await BluetoothEscposPrinter.printColumn([BluetoothEscposPrinter.width58 / 8 / 3, BluetoothEscposPrinter.width58 / 8 / 3 - 1, BluetoothEscposPrinter.width58 / 8 / 3 - 1],
                         [BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.CENTER],
-                        ["Title", 'testing', '223344'], {fonttype: 1});
-                    await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                }} title="Print Column"/>
+                        ["Title", 'testing', '223344'], { fonttype: 1 });
+                    await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                }} title="Print Column" />
             </View>
+
+
+
+
             <View style={styles.btn}>
                 <Button disabled={this.state.loading || this.state.boundAddress.length <= 0}
-                        title="Print Receipt" onPress={async () => {
-                    try {
-                        await BluetoothEscposPrinter.printerInit();
-                        await BluetoothEscposPrinter.printerLeftSpace(0);
+                    title="Print Receipt" onPress={async () => {
+                        try {
+                            await BluetoothEscposPrinter.printerInit();
+                            await BluetoothEscposPrinter.printerLeftSpace(0);
 
-                        await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
-                        await BluetoothEscposPrinter.setBlob(0);
-                        await  BluetoothEscposPrinter.printText("Outlet Name\r\n", {
-                            encoding: 'GBK',
-                            codepage: 25,
-                            widthtimes: 3,
-                            heigthtimes: 3,
-                            fonttype: 1
-                        });
-                        await BluetoothEscposPrinter.setBlob(0);
-                        await  BluetoothEscposPrinter.printText("Alamat\r\n", {
-                            encoding: 'GBK',
-                            codepage: 25,
-                            widthtimes: 0,
-                            heigthtimes: 0,
-                            fonttype: 1
-                        });
-                        await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
-                        await  BluetoothEscposPrinter.printText("row\r\n", {});
-                        await  BluetoothEscposPrinter.printText("row1：xsd201909210000001\r\n", {});
-                        await  BluetoothEscposPrinter.printText("Date :\r\n", {});
-                        await  BluetoothEscposPrinter.printText("ID：18664896621\r\n", {});
-                        await  BluetoothEscposPrinter.printText("--------------------------------\r\n", {});
-                        let columnWidths = [12, 6, 6, 8];
-                        await BluetoothEscposPrinter.printColumn(columnWidths,  
-                            [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.RIGHT],
-                            ["24", '24', '24', '24'], {});
-                        await BluetoothEscposPrinter.printColumn(columnWidths,
-                            [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.RIGHT],
-                            ["React-Test?", '1', '32000', '32000'], {});
-                        await  BluetoothEscposPrinter.printText("\r\n", {});
-                        await BluetoothEscposPrinter.printColumn(columnWidths,
-                            [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.RIGHT],
-                            ["React-NativePrint", '1', '32000', '32000'], {});
-                        await  BluetoothEscposPrinter.printText("\r\n", {});
-                        await  BluetoothEscposPrinter.printText("--------------------------------\r\n", {});
-                        await BluetoothEscposPrinter.printColumn([12, 8, 12],
-                            [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.RIGHT],
-                            ["Test Row", '2', '64000'], {});
-                        await  BluetoothEscposPrinter.printText("\r\n", {});
-                        await  BluetoothEscposPrinter.printText("Pajak：100%\r\n", {});
-                        await  BluetoothEscposPrinter.printText("Harga：64000.00\r\n", {});
-                        await  BluetoothEscposPrinter.printText("Harga：0.00\r\n", {});
-                        await  BluetoothEscposPrinter.printText("Item：0.00\r\n", {});
-                        await  BluetoothEscposPrinter.printText("Item：64000.00\r\n", {});
-                        await  BluetoothEscposPrinter.printText("Item：what\r\n", {});
-                        await  BluetoothEscposPrinter.printText("--------------------------------\r\n", {});
-                        await  BluetoothEscposPrinter.printText("yeah：\r\n", {});
-                        await  BluetoothEscposPrinter.printText("hmmm:\r\n\r\n", {});
-                        await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
-                        await  BluetoothEscposPrinter.printText("Test\r\n\r\n\r\n", {});
-                        await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
-                        await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                    } catch (e) {
-                        alert('E ' + e.message || "ERROR");
-                    }
+                            await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
+                            await BluetoothEscposPrinter.setBlob(0);
+                            await BluetoothEscposPrinter.printText("Outlet Name\r\n", {
+                                encoding: 'GBK',
+                                codepage: 25,
+                                widthtimes: 3,
+                                heigthtimes: 3,
+                                fonttype: 1
+                            });
+                            await BluetoothEscposPrinter.setBlob(0);
+                            await BluetoothEscposPrinter.printText("Alamat\r\n", {
+                                encoding: 'GBK',
+                                codepage: 25,
+                                widthtimes: 0,
+                                heigthtimes: 0,
+                                fonttype: 1
+                            });
+                            await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
+                            await BluetoothEscposPrinter.printText("www.mocash.com\r\n", {});
+                            await BluetoothEscposPrinter.printText("Cashier 1\r\n", {});
+                            await BluetoothEscposPrinter.printText("--------------------------------\r\n", {});
+                            await BluetoothEscposPrinter.printText("Transaction ID : 123123123\r\n", {});
+                            await BluetoothEscposPrinter.printText("10/10/2020, 15:15\r\n", {});
+                            await BluetoothEscposPrinter.printText("--------------------------------\r\n", {});
+                            
+                            let columnWidths = [12, 6, 6, 8];
 
-                }}/>
+                            await BluetoothEscposPrinter.printColumn(columnWidths,
+                                [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.RIGHT],
+                                ["Item", 'qty', 'price', 'subtotal'], {});
+
+                            await BluetoothEscposPrinter.printColumn(columnWidths,
+                                [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.RIGHT],
+                                ["Item 1", '1', 'Rp 32000', 'Rp 32000'], {});
+                            await BluetoothEscposPrinter.printText("\r\n", {});
+                            await BluetoothEscposPrinter.printColumn(columnWidths,
+                                [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.CENTER, BluetoothEscposPrinter.ALIGN.RIGHT],
+                                ["Item 2", '2', 'Rp 12000', 'Rp 24000'], {});
+                            await BluetoothEscposPrinter.printText("\r\n", {});
+
+
+                            await BluetoothEscposPrinter.printText("--------------------------------\r\n", {});
+                            await BluetoothEscposPrinter.printColumn([12, 8, 12],
+                                [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.RIGHT],
+                                ["Subtotal", '3', 'Rp 56000'], {});
+
+                            await BluetoothEscposPrinter.printText("\r\n", {});
+                            await BluetoothEscposPrinter.printColumn([12, 12],
+                                [BluetoothEscposPrinter.ALIGN.RIGHT, BluetoothEscposPrinter.ALIGN.RIGHT],
+                                ["PPN ( 10% ): ", 'Rp 5600'], {});
+                            await BluetoothEscposPrinter.printColumn([12, 12],
+                                [BluetoothEscposPrinter.ALIGN.RIGHT, BluetoothEscposPrinter.ALIGN.RIGHT],
+                                ["Potongan : ", 'Rp 0'], {});
+                            await BluetoothEscposPrinter.printText("--------------------------------\r\n", {});
+                            await BluetoothEscposPrinter.printColumn([12, 12],
+                                [BluetoothEscposPrinter.ALIGN.LEFT, BluetoothEscposPrinter.ALIGN.RIGHT],
+                                ["Total", 'Rp 61600'], {});
+                            await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
+                            await BluetoothEscposPrinter.printText("---Thank You---\r\n\r\n\r\n", {});
+                            await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
+                            await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                        } catch (e) {
+                            alert('Please Connect to Device, Error : ' + e.message || "ERROR");
+                        }
+
+                    }} />
             </View>
+
+
+
             <View style={styles.btn}>
                 <Button disabled={this.state.loading || this.state.boundAddress.length <= 0}
-                        title="Print FOLLOWING Image" onPress={async () => {
-                    try {
-                        await BluetoothEscposPrinter.printPic(base64Jpg, {width: 200, left: 40});
-                        await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                        await BluetoothEscposPrinter.printPic(base64Image, {width: 200, left: 40});
-                        await  BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
-                        await BluetoothEscposPrinter.printPic(base64JpgLogo, {width: 220, left: 20});
-                    } catch (e) {
-                        alert(e.message || "ERROR")
-                    }
-                }}/>
+                    title="Print FOLLOWING Image" onPress={async () => {
+                        try {
+                            await BluetoothEscposPrinter.printPic(base64Jpg, { width: 200, left: 40 });
+                            await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                            await BluetoothEscposPrinter.printPic(base64Image, { width: 200, left: 40 });
+                            await BluetoothEscposPrinter.printText("\r\n\r\n\r\n", {});
+                            await BluetoothEscposPrinter.printPic(base64JpgLogo, { width: 220, left: 20 });
+                        } catch (e) {
+                            alert(e.message || "ERROR")
+                        }
+                    }} />
                 <View>
-                    <Image style={{width: 150, height: 58}} source={{uri: "data:image/jpeg;base64," + base64Jpg}}/>
-                    <Image style={{width: 60, height: 60}} source={{uri: "data:image/png;base64," + base64Image}}/>
-                    <Image style={{width: 150, height: 70}} source={{uri: "data:image/jpeg;base64," + base64JpgLogo}}/>
+                    <Image style={{ width: 150, height: 58 }} source={{ uri: "data:image/jpeg;base64," + base64Jpg }} />
+                    <Image style={{ width: 60, height: 60 }} source={{ uri: "data:image/png;base64," + base64Image }} />
+                    <Image style={{ width: 150, height: 70 }} source={{ uri: "data:image/jpeg;base64," + base64JpgLogo }} />
                 </View>
             </View>
 
